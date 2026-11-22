@@ -614,17 +614,28 @@ if (self.Config) {
  * Uses the last focused normal window as the host for centering.
  */
 function openCenteredPopup() {
-  chrome.windows.getLastFocused({windowTypes: ['normal']}, function(host) {
-    var bounds = host ? CenteredWindow.computeBounds(host)
-                      : {left: 100, top: 100, width: CenteredWindow.DEFAULT_WIDTH, height: CenteredWindow.DEFAULT_HEIGHT};
-    chrome.windows.create({
-      url: chrome.runtime.getURL('popup.html?popup=true&windowed=true'),
-      type: 'popup',
-      focused: true,
-      left: bounds.left,
-      top: bounds.top,
-      width: bounds.width,
-      height: bounds.height
+  var popupUrl = chrome.runtime.getURL('popup.html?popup=true&windowed=true');
+  // Toggle: if the floating window is already open, the same shortcut closes it.
+  // Found by tab URL instead of a stored id, so a service worker restart
+  // cannot strand the state.
+  chrome.windows.getAll({populate: true, windowTypes: ['popup']}, function(wins) {
+    var existing = CenteredWindow.findPopupWindow(wins, popupUrl);
+    if (existing) {
+      chrome.windows.remove(existing.id, function() { void chrome.runtime.lastError; });
+      return;
+    }
+    chrome.windows.getLastFocused({windowTypes: ['normal']}, function(host) {
+      var bounds = host ? CenteredWindow.computeBounds(host)
+                        : {left: 100, top: 100, width: CenteredWindow.DEFAULT_WIDTH, height: CenteredWindow.DEFAULT_HEIGHT};
+      chrome.windows.create({
+        url: popupUrl,
+        type: 'popup',
+        focused: true,
+        left: bounds.left,
+        top: bounds.top,
+        width: bounds.width,
+        height: bounds.height
+      });
     });
   });
 }

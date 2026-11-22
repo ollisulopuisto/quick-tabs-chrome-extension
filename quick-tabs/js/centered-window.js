@@ -26,11 +26,44 @@ var CenteredWindow = (function() {
     return { left: Math.max(left, host.left), top: Math.max(top, host.top), width: width, height: height };
   }
 
+  /**
+   * Find an already-open centered Quick Tabs window among popup-type
+   * windows (as returned by chrome.windows.getAll with populate: true),
+   * by matching a tab URL. Stateless: no stored window id that a service
+   * worker restart could lose. Returns the window or null.
+   */
+  function findPopupWindow(windows, popupUrl) {
+    for (var i = 0; i < windows.length; i++) {
+      var tabs = windows[i].tabs || [];
+      for (var j = 0; j < tabs.length; j++) {
+        if (tabs[j].url === popupUrl) {
+          return windows[i];
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * The open shortcut pressed again closes the floating window: Cmd+D on
+   * macOS (his binding). Matched by event.code so layout does not matter;
+   * any extra modifier (Shift/Option/Ctrl) makes it a different shortcut.
+   */
+  function isToggleKey(e) {
+    if (!e) {
+      return false;
+    }
+    return e.metaKey === true && e.ctrlKey !== true && e.altKey !== true &&
+           e.shiftKey !== true && e.code === 'KeyD';
+  }
+
   return {
     DEFAULT_WIDTH: DEFAULT_WIDTH,
     DEFAULT_HEIGHT: DEFAULT_HEIGHT,
     VERTICAL_RATIO: VERTICAL_RATIO,
-    computeBounds: computeBounds
+    computeBounds: computeBounds,
+    findPopupWindow: findPopupWindow,
+    isToggleKey: isToggleKey
   };
 })();
 
