@@ -414,6 +414,18 @@ $(document).ready(async function() {
     return closeWindow();
   });
 
+  // Same shortcut toggles the floating window closed. When the browser
+  // delivers the command keystroke to the page instead of the command
+  // handler, close from here; the command handler covers the rest.
+  if (getUrlParameter('windowed') === 'true') {
+    document.addEventListener('keydown', function(e) {
+      if (CenteredWindow.isToggleKey(e)) {
+        e.preventDefault();
+        closeWindow();
+      }
+    });
+  }
+
   $('#searchbox').on({
     'keyup': function() {
       let str = $("#searchbox").val();
