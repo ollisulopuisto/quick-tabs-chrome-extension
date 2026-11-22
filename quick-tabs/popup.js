@@ -35,6 +35,10 @@ async function bg(name, arg) {
 
 await Config.init();
 
+if (getUrlParameter('windowed') === 'true') {
+  document.body.classList.add('windowed');
+}
+
 if (getUrlParameter('firstRun') === 'true') {
   await chrome.runtime.sendMessage({ firstRun: true });
 }

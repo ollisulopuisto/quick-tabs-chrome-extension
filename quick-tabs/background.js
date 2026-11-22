@@ -520,6 +520,11 @@ async function init() {
   chrome.commands.onCommand.addListener(function(command) {
     //log('Command:', command);
 
+    if (command === "open-centered-popup") {
+      openCenteredPopup();
+      return;
+    }
+
     if (popupMessagePort) { // shortcut triggered from inside popup
       if (command === "quick-prev-tab") {
         popupMessagePort.postMessage({cmd: "prev"});
@@ -602,6 +607,26 @@ async function init() {
 
 if (self.Config) {
   init();
+}
+
+/**
+ * Open the popup page in a centered, Alfred-like floating window.
+ * Uses the last focused normal window as the host for centering.
+ */
+function openCenteredPopup() {
+  chrome.windows.getLastFocused({windowTypes: ['normal']}, function(host) {
+    var bounds = host ? CenteredWindow.computeBounds(host)
+                      : {left: 100, top: 100, width: CenteredWindow.DEFAULT_WIDTH, height: CenteredWindow.DEFAULT_HEIGHT};
+    chrome.windows.create({
+      url: chrome.runtime.getURL('popup.html?popup=true&windowed=true'),
+      type: 'popup',
+      focused: true,
+      left: bounds.left,
+      top: bounds.top,
+      width: bounds.width,
+      height: bounds.height
+    });
+  });
 }
 
 /**

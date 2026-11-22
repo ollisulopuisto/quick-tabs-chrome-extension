@@ -36,6 +36,9 @@
     },
     "quick-duplicate-tab": {
       "description": "Duplicate the current tab"
+    },
+    "open-centered-popup": {
+      "description": "Open Quick Tabs centered on the screen (Alfred-style window)"
     }
   }
 }
