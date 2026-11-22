@@ -14,6 +14,7 @@
     "48": "assets/icon-48.png"
   },
   "manifest_version": 3,
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1kuNSwnWAsKKxcSHRw9/Bh7/CX4N7LAErVXa5Z/EzGhStfROh31slhaHpgyKBdHS25n6FGo2dROt5hfHGSxDO5EzPQ5JDlsp7ne8DLIgBgL0rwXLz1g6jEdna4zyCDrP5Cd6au45J3xqpeLi1xC3Eatfb+G3dXB/xDUmShXHKpOBdwqLmnRIERoaDxcFyZQKDf3naJHqyNdgpaWTRIbj7nG/LzT0uM0dalwpHzZj/3gtq2iAe9fZdQLCYdyfGj8lDCOBj1aQ2WX/ppNpCEd1592T+NYom1ZAcBquSF77XTBiZyZkyMuWroEV5bdSkZzWPVReULwHnYE7gmRlKhNo4wIDAQAB",
   "name": "Quick Tabs",
   "options_page": "options.html",
   "permissions": [ "tabs", "bookmarks", "history", "storage" ],
