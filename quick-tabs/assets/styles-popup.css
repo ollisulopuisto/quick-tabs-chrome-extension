@@ -283,3 +283,23 @@ span.jumpkey {
   background: rgba(255, 255, 255, 0.18);
   border-color: rgba(255, 255, 255, 0.45);
 }
+
+/* windowed mode: fill the centered floating window (opened via the
+   "open-centered-popup" command) instead of the fixed-size action popup */
+body.windowed {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+body.windowed .content {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+body.windowed .qs_input {
+  width: 100%;
+  box-sizing: border-box;
+}
